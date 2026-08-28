@@ -1,156 +1,76 @@
 <!doctype html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="성취기준과 평가 계획을 입력하면 서·논술형 채점 루브릭을 만드는 교사용 도구" />
-    <title>루브릭 메이커 | 서·논술형 평가 설계</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <header class="topbar">
-      <a class="brand" href="#top" aria-label="루브릭 메이커 처음으로">
-        <span class="brand-mark">R</span>
-        <span>루브릭 메이커</span>
-      </a>
-      <div class="top-actions">
-        <span class="save-state" id="saveState">이 브라우저에 자동 저장</span>
-        <button class="button ghost small" id="loadSample" type="button">예시 불러오기</button>
-      </div>
-    </header>
-
-    <main id="top">
-      <section class="hero">
-        <div class="hero-copy">
-          <p class="eyebrow">교사의 판단을 중심에 둔 평가 설계 도구</p>
-          <h1>평가의 의도를 입력하면,<br /><em>채점 가능한 기준</em>으로 정리해 드려요.</h1>
-          <p class="hero-description">성취기준과 문항별 핵심만 입력하세요. 문항-채점요소-척도-수행특성이 서로 맞물린 루브릭을 한 화면에서 만들 수 있습니다.</p>
-          <div class="hero-points">
-            <span>✓ 필수 정보만 단계별 안내</span>
-            <span>✓ 문항별 분석적 루브릭 생성</span>
-            <span>✓ 인쇄·JSON 내보내기</span>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="최소한의 수업 정보로 문항 초안과 서·논술형 루브릭을 자동 생성하는 교사용 도구" />
+  <title>루브릭 메이커</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top"><span class="brand-mark">R</span><span>루브릭 메이커</span></a>
+    <div class="top-actions"><span class="save-state" id="saveState">이 브라우저에 자동 저장</span><button class="button ghost small" id="loadSample" type="button">예시 불러오기</button></div>
+  </header>
+  <main id="top" class="focused-main">
+    <section class="compact-intro">
+      <p class="eyebrow">서·논술형 평가를 위한 루브릭 생성기</p>
+      <h1>수업 정보만 알려주세요.<br><em>문항과 루브릭 초안</em>을 함께 만듭니다.</h1>
+      <p>평가 설계 문서 전체를 만들지 않습니다. 꼭 필요한 정보만 받아 문항별 채점요소·척도·수행 특성을 정리합니다.</p>
+    </section>
+    <section class="simple-workspace">
+      <div class="simple-progress"><span class="active">1&nbsp; 정보 입력</span><i></i><span>2&nbsp; 문항 확인</span><i></i><span>3&nbsp; 루브릭 완성</span></div>
+      <form id="rubricForm" novalidate>
+        <section class="simple-panel" id="inputPanel">
+          <div class="panel-heading">
+            <div><p class="section-number">필수 정보 5가지</p><h2>무엇을 평가할까요?</h2><p>문항을 직접 쓰지 않아도 됩니다. 아래 내용으로 문항 초안을 자동 구성합니다.</p></div>
+            <span class="required-note"><i>*</i> 필수 입력</span>
           </div>
-        </div>
-        <aside class="hero-card" aria-label="완성 과정 안내">
-          <p class="mini-label">완성까지 약 5분</p>
-          <ol>
-            <li><b>수업 맥락</b><span>교과, 학년, 단원</span></li>
-            <li><b>평가 근거</b><span>성취기준, 평가 내용</span></li>
-            <li><b>문항 설계</b><span>채점요소, 기대 수행</span></li>
-            <li><b>검토·완성</b><span>수준 구간, 유의점</span></li>
-          </ol>
-        </aside>
-      </section>
-
-      <section class="workspace">
-        <nav class="steps" aria-label="루브릭 생성 단계">
-          <button class="step active" data-step="1"><span>01</span><b>수업 맥락</b><small>평가의 기본 정보</small></button>
-          <button class="step" data-step="2"><span>02</span><b>평가 근거</b><small>성취기준과 목표</small></button>
-          <button class="step" data-step="3"><span>03</span><b>문항 설계</b><small>문항별 채점 정보</small></button>
-          <button class="step" data-step="4"><span>04</span><b>검토·완성</b><small>루브릭 생성</small></button>
-        </nav>
-
-        <form id="rubricForm" novalidate>
-          <section class="panel active" data-panel="1">
-            <div class="panel-heading">
-              <div><p class="section-number">STEP 01</p><h2>어떤 수업의 평가인가요?</h2><p>학생과 평가의 맥락을 알 수 있는 기본 정보입니다.</p></div>
-              <span class="required-note"><i>*</i> 필수 입력</span>
-            </div>
-            <div class="field-grid three">
-              <label class="field"><span>교과 <i>*</i></span><input name="subject" required placeholder="예: 사회" /></label>
-              <label class="field"><span>학년·학기 <i>*</i></span><input name="grade" required placeholder="예: 6학년 1학기" /></label>
-              <label class="field"><span>영역</span><input name="domain" placeholder="예: 한국사" /></label>
-            </div>
-            <div class="field-grid two">
-              <label class="field"><span>단원 <i>*</i></span><input name="unit" required placeholder="예: 평화 통일을 위한 노력" /></label>
-              <label class="field"><span>평가 유형</span><select name="assessmentType"><option>서술형·논술형</option><option>서술형</option><option>논술형</option><option>프로젝트형</option></select></label>
-            </div>
-            <fieldset class="field checkbox-field">
-              <legend>문해력 요소 <span class="hint">복수 선택 가능</span></legend>
-              <div class="checks">
-                <label><input type="checkbox" name="literacy" value="어휘" /> 어휘</label>
-                <label><input type="checkbox" name="literacy" value="탐색 및 확인" /> 탐색 및 확인</label>
-                <label><input type="checkbox" name="literacy" value="통합 및 해석" /> 통합 및 해석</label>
-                <label><input type="checkbox" name="literacy" value="평가 및 적용" /> 평가 및 적용</label>
+          <div class="field-grid three">
+            <label class="field"><span>교과 <i>*</i></span><input name="subject" required placeholder="예: 사회" /></label>
+            <label class="field"><span>학년·학기 <i>*</i></span><input name="grade" required placeholder="예: 4학년 1학기" /></label>
+            <label class="field"><span>문항 수 <i>*</i></span><select name="itemCount"><option value="1">1문항</option><option value="2">2문항</option><option value="3" selected>3문항</option><option value="4">4문항</option></select></label>
+          </div>
+          <label class="field"><span>성취기준 <i>*</i></span><textarea name="standard" required rows="4" placeholder="예: [4사05-01] 민주주의의 의미를 이해하고, 학교생활에서 민주주의를 실천하는 태도를 기른다."></textarea><small>성취기준 코드와 문장을 그대로 붙여 넣어 주세요.</small></label>
+          <label class="field"><span>이번에 평가할 내용 <i>*</i></span><textarea name="focus" required rows="3" placeholder="예: 선거 과정에 참여하는 방법과 바람직한 태도"></textarea><small>단원명보다 구체적으로 적으면 문항이 더 정확해집니다.</small></label>
+          <details class="advanced-box">
+            <summary>선택 정보 추가하기 <span>더 정확한 문항을 만들 때 사용</span></summary>
+            <div class="advanced-content">
+              <div class="field-grid two">
+                <label class="field"><span>수업에서 다룬 자료·사례</span><textarea name="materials" rows="3" placeholder="예: 학급 회장 선거, 공약 비교표, 투표 절차"></textarea></label>
+                <label class="field"><span>학생에게 기대하는 수행</span><textarea name="expectation" rows="3" placeholder="예: 근거를 들어 판단하고 자신의 의견을 제안하기"></textarea></label>
               </div>
-            </fieldset>
-          </section>
-
-          <section class="panel" data-panel="2">
-            <div class="panel-heading">
-              <div><p class="section-number">STEP 02</p><h2>무엇을 근거로 평가하나요?</h2><p>좋은 루브릭은 성취기준과 평가 내용에서 출발합니다.</p></div>
-              <span class="required-note"><i>*</i> 필수 입력</span>
+              <div class="field-grid two">
+                <label class="field"><span>문항당 만점</span><select name="maxScore"><option value="2">2점</option><option value="3" selected>3점</option><option value="4">4점</option><option value="5">5점</option></select></label>
+                <label class="field"><span>공통 인정 범위</span><input name="commonRule" placeholder="예: 표현이 달라도 의미와 근거가 타당하면 인정" /></label>
+              </div>
             </div>
-            <label class="field"><span>성취기준 코드와 내용 <i>*</i></span><textarea name="standard" required rows="4" placeholder="예: [6사07-01] 분단으로 나타난 문제점과 … 우리가 할 수 있는 일을 탐색한다."></textarea><small>코드가 없다면 성취기준 문장만 입력해도 됩니다.</small></label>
-            <label class="field"><span>평가 내용 <i>*</i></span><textarea name="assessmentContent" required rows="3" placeholder="학생이 이번 평가에서 무엇을 알고, 설명하고, 적용해야 하는지 한두 문장으로 적어 주세요."></textarea></label>
-            <div class="field-grid two">
-              <label class="field"><span>핵심 아이디어</span><textarea name="coreIdea" rows="3" placeholder="예: 역사 문제를 해결하며 역사적 주체로서 실천하는 태도를 갖는다."></textarea></label>
-              <label class="field"><span>내용 요소</span><textarea name="contentElements" rows="3" placeholder="지식·이해 / 과정·기능 / 가치·태도를 줄바꿈으로 구분해 주세요."></textarea></label>
-            </div>
-          </section>
-
-          <section class="panel" data-panel="3">
-            <div class="panel-heading">
-              <div><p class="section-number">STEP 03</p><h2>문항마다 무엇을 볼까요?</h2><p>문항과 채점요소가 한 쌍이 되도록 입력해 주세요.</p></div>
-              <button class="button secondary" type="button" id="addQuestion">+ 문항 추가</button>
-            </div>
-            <div id="questions" class="question-list"></div>
-          </section>
-
-          <section class="panel" data-panel="4">
-            <div class="panel-heading">
-              <div><p class="section-number">STEP 04</p><h2>마지막 기준을 정해 주세요.</h2><p>생성 전 점수 체계와 공통 채점 원칙을 확인합니다.</p></div>
-              <span class="required-note"><i>*</i> 필수 입력</span>
-            </div>
-            <div class="field-grid two">
-              <label class="field"><span>성취 수준 수 <i>*</i></span><select name="levelCount" required><option value="3">3수준 (상·중·하)</option><option value="4">4수준 (매우 우수·우수·보통·노력 필요)</option></select></label>
-              <label class="field"><span>공통 채점 원칙</span><input name="commonRule" placeholder="예: 예시 답안과 표현이 달라도 의미가 타당하면 인정" /></label>
-            </div>
-            <label class="field"><span>교사 피드백 방향</span><textarea name="feedback" rows="3" placeholder="예: 근거가 부족한 학생에게 자료의 핵심어를 찾아 다시 설명하도록 안내"></textarea></label>
-            <div class="review-box" id="reviewBox"></div>
-          </section>
-
-          <div class="form-actions">
-            <button class="button ghost" id="prevStep" type="button" hidden>이전</button>
-            <div class="spacer"></div>
-            <button class="button primary" id="nextStep" type="button">다음 단계</button>
-            <button class="button primary generate" id="generate" type="submit" hidden>루브릭 생성하기</button>
-          </div>
-        </form>
+          </details>
+          <div class="single-action"><button class="button primary big" type="submit">문항 초안 만들기 <span>→</span></button></div>
+        </section>
+      </form>
+      <section class="simple-panel generated-panel" id="questionPanel" hidden>
+        <div class="panel-heading">
+          <div><p class="section-number">자동 생성된 문항</p><h2>문항을 먼저 확인해 주세요.</h2><p>원하지 않는 표현만 고치면 채점 루브릭은 자동으로 따라 바뀝니다.</p></div>
+          <button class="button ghost" id="regenerate" type="button">다시 만들기</button>
+        </div>
+        <div id="generatedQuestions" class="generated-questions"></div>
+        <div class="generator-note"><b>생성 원칙</b><span>성취기준의 행동 동사와 평가 내용을 연결하고, 문항 사이에 이해·분석·적용의 난이도 차이를 둡니다. 입력하지 않은 통계·인용·고유명사는 만들지 않습니다.</span></div>
+        <div class="dual-actions"><button class="button ghost" id="backToInput" type="button">입력 수정</button><button class="button primary big" id="makeRubric" type="button">이 문항으로 루브릭 만들기 <span>→</span></button></div>
       </section>
-
-      <section class="result-section" id="resultSection" hidden>
-        <div class="result-heading">
-          <div><p class="section-number">완성된 루브릭</p><h2>채점 기준이 준비됐어요.</h2><p>표 안의 문장을 직접 수정한 뒤 인쇄하거나 데이터를 저장할 수 있습니다.</p></div>
-          <div class="result-actions">
-            <button class="button ghost" id="editAgain" type="button">입력 수정</button>
-            <button class="button secondary" id="exportJson" type="button">JSON 저장</button>
-            <button class="button primary" id="printRubric" type="button">인쇄 / PDF</button>
-          </div>
-        </div>
-        <article class="rubric-paper" id="rubricOutput"></article>
-      </section>
-    </main>
-
-    <template id="questionTemplate">
-      <article class="question-card">
-        <div class="question-head"><div><span class="question-badge"></span><h3>문항 설계</h3></div><button class="icon-button remove-question" type="button" aria-label="문항 삭제">삭제</button></div>
-        <div class="field-grid two">
-          <label class="field"><span>문항 또는 과제 <i>*</i></span><textarea data-key="prompt" required rows="3" placeholder="학생에게 제시할 질문이나 과제를 입력하세요."></textarea></label>
-          <label class="field"><span>채점요소 <i>*</i></span><textarea data-key="element" required rows="3" placeholder="예: 원인과 결과를 근거로 설명하기"></textarea></label>
-        </div>
-        <div class="field-grid two">
-          <label class="field"><span>만점 <i>*</i></span><select data-key="maxScore"><option value="2">2점</option><option value="3">3점</option><option value="4">4점</option><option value="5">5점</option></select></label>
-          <label class="field"><span>기대 답안의 핵심 <i>*</i></span><textarea data-key="evidence" required rows="3" placeholder="꼭 포함되어야 할 개념, 근거, 과정 등을 쉼표나 줄바꿈으로 적어 주세요."></textarea></label>
-        </div>
-        <label class="field"><span>인정 범위·유의점</span><textarea data-key="note" rows="2" placeholder="예: 예시와 다른 사례도 논리가 타당하면 인정"></textarea></label>
-      </article>
-    </template>
-
-    <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <script src="app.js"></script>
-  </body>
+    </section>
+    <section class="result-section" id="resultSection" hidden>
+      <div class="result-heading">
+        <div><p class="section-number">루브릭 완성</p><h2>문항별 채점 기준입니다.</h2><p>각 셀을 눌러 문구를 수정한 뒤 인쇄하거나 저장할 수 있습니다.</p></div>
+        <div class="result-actions"><button class="button ghost" id="editQuestions" type="button">문항 수정</button><button class="button secondary" id="exportJson" type="button">JSON 저장</button><button class="button primary" id="printRubric" type="button">인쇄 / PDF</button></div>
+      </div>
+      <article class="rubric-paper" id="rubricOutput"></article>
+    </section>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
 </html>
